@@ -1,6 +1,18 @@
 import { SentimentDissatisfiedOutlined } from '@material-ui/icons';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+
+
 class LoginForm extends React.Component{
     constructor(){
         super()
@@ -23,7 +35,10 @@ class LoginForm extends React.Component{
             password1:"",
             response1:"",
             response:"",
-            isLogin:false
+            isLogin:false,
+            error_empty_email:"",
+            error_empty_password:"",
+            error_invalid_email:""
         }
     }
 
@@ -62,10 +77,41 @@ class LoginForm extends React.Component{
      }         
      ).then(response1=>response1.json()
      ).then(json1=>this.setState({response1:json1})
-     ).then(console.log(this.state.response1))
+     )
+    }
+
+    runValidation(){
+        var errCount=0;
+        if(this.state.username==""){
+            this.setState({error_empty_email:"Please Enter Email"})
+            errCount++;
+         }else{
+            this.setState({error_empty_email:""})
+         }
+         if(this.state.password==""){
+             this.setState({error_empty_password:"Please Enter Password"})
+             errCount++;
+         }else{
+            this.setState({error_empty_password:""})
+         }
+         if(this.state.username!=""){
+         if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.username))){
+            this.setState({error_invalid_email:"Please fill a valid email"})
+            errCount++
+            
+         }else{
+            this.setState({error_invalid_email:""})
+         }
+        }
+         if(errCount>0){
+             return false;
+         }
+         return true;
     }
     handleClick=(e)=>{
         e.preventDefault()
+        /*Client validation*/
+        if(this.runValidation()){          
         let _data={
             email:this.state.username,
             password:this.state.password
@@ -84,49 +130,234 @@ class LoginForm extends React.Component{
             }
         }
         )
+    }
 
     }  
     render(){
         if(!sessionStorage.getItem("login")){
         return(
-             
-            <form>
-                <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
-                <input type="text" name="password" value={this.state.password} onChange={this.handleChange}/>
-                <input type="submit" onClick={this.handleClick} value="Login"/>
-                <div>{this.state.response.message}</div>
-            </form>
+          <div>
+    <React.Fragment>
+      <CssBaseline />
+       <Container maxWidth="sm">
+         <AppBar position="static">  
+           <Toolbar>  
+            Administrator Login
+        </Toolbar>  
+    </AppBar>
+          <Box component="form"
+           sx={{ flexGrow: 1 ,border:1,mx: "auto",
+             height: '40vh',
+            '& > :not(style)': { m: 1, width: '70ch' }}}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Email*" 
+        variant="outlined" 
+        name="username" 
+        value={this.state.username} 
+        onChange={this.handleChange}  
+        style={{width:500}} />
+        <div style={{color:"red"}}>{this.state.error_empty_email!=""?this.state.error_empty_email:""}</div>
+        <div style={{color:"red"}}>{this.state.error_invalid_email!=""?this.state.error_invalid_email:""}</div>
+        </Grid>
+        
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Password*" 
+        variant="outlined" 
+        name="password" 
+        value={this.state.password} 
+        onChange={this.handleChange} 
+        style={{width:500}}/>
+        <div style={{color:"red"}}>{this.state.error_empty_password!=""?this.state.error_empty_password:""}</div>
+        </Grid>
+        <Grid item xs={12}>
+        <Box sx={{mx:"auto",width:250}}>
+         <Button variant='contained' onClick={this.handleClick}>
+          Login
+        </Button>
+        <div>{this.state.response.message}</div>
+        </Box>
+        
+        </Grid>
+        
+      </Grid>
+    </Box>
+    
+      </Container>
+    </React.Fragment>
+        
+        
+           
+            </div>
         )}else{
             return(
-                 <form>
-                     <label for="qci_id">Qci_id:</label>
-                     <input type="text" name="qci_id" value={this.state.qci_id} onChange={this.handleChange}/>
-                     <label for="name">Name:</label>
-                     <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
-                     <label for="email">Email:</label>
-                     <input type="text" name="email" value={this.state.email} onChange={this.handleChange}/>
-                     <label for="board">Board:</label>
-                     <input type="text" name="board" value={this.state.board} onChange={this.handleChange}/>
-                     <label for="designation">Designation:</label>
-                     <input type="text" name="designation" value={this.state.designation} onChange={this.handleChange}/>
-                     <label for="type_of_employee">Type of Employee:</label>
-                     <input type="text" name="type_of_employee" value={this.state.type_of_employee} onChange={this.handleChange}/>
-                     <label for="bal_cl">bal_cl</label>
-                     <input type="text" name="bal_cl" value={this.state.bal_cl} onChange={this.handleChange}/>
-                     <label for="bal_sl">bal_sl</label>
-                     <input type="text" name="bal_sl" value={this.state.bal_sl} onChange={this.handleChange}/>
-                     <label for="bal_pl">bal_pl</label>
-                     <input type="text" name="bal_pl" value={this.state.bal_pl} onChange={this.handleChange}/>
-                     <label for="bal_ml">bal_ml</label>
-                     <input type="text" name="bal_ml" value={this.state.bal_ml} onChange={this.handleChange}/>
-                     <label for="bal_ptl">bal_ptl</label>
-                     <input type="text" name="bal_ptl" value={this.state.bal_ptl} onChange={this.handleChange}/>
-                     <label for="bal_eol">bal_eol</label>
-                     <input type="text" name="bal_eol" value={this.state.bal_eol} onChange={this.handleChange}/>
-                     <label for="password1">password1</label>
-                     <input type="text" name="password1" value={this.state.password1} onChange={this.handleChange}/>
-                     <input type="submit" name="addemployee" value="Add Employee" onClick={this.addEmployee}/>
-                 </form>
+                <div>
+    
+    <React.Fragment>
+      <CssBaseline />
+       <Container maxWidth="sm">
+         <AppBar position="static">  
+           <Toolbar>  
+            Add Employee Details
+        </Toolbar>  
+    </AppBar>
+          <Box component="form"
+           sx={{ flexGrow: 1 ,border:1,mx: "auto",
+             height: '150vh',
+            '& > :not(style)': { m: 1, width: '70ch' }}}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="QCI_ID" 
+        variant="outlined" 
+        name="qci_id" 
+        value={this.state.qci_id} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Name" 
+        variant="outlined" 
+        name="name" 
+        value={this.state.name} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Email" 
+        variant="outlined" 
+        name="email" 
+        value={this.state.email} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Board" 
+        variant="outlined" 
+        name="board" 
+        value={this.state.board} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Designation" 
+        variant="outlined" 
+        name="designation" 
+        value={this.state.designation} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Type of Employee" 
+        variant="outlined" 
+        name="type_of_employee" 
+        value={this.state.type_of_employee} 
+        onChange={this.handleChange}  
+        style={{width:500}} /> 
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_cl" 
+        variant="outlined" 
+        name="bal_cl" 
+        value={this.state.bal_cl} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>       
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_sl" 
+        variant="outlined" 
+        name="bal_sl" 
+        value={this.state.bal_sl} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_pl" 
+        variant="outlined" 
+        name="bal_pl" 
+        value={this.state.bal_pl} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_ml" 
+        variant="outlined" 
+        name="bal_ml" 
+        value={this.state.bal_ml} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_ptl" 
+        variant="outlined" 
+        name="bal_ptl" 
+        value={this.state.bal_ptl} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="bal_eol" 
+        variant="outlined" 
+        name="bal_eol" 
+        value={this.state.bal_eol} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <TextField 
+        id="outlined-basic" 
+        label="Password" 
+        variant="outlined" 
+        name="password1" 
+        value={this.state.password1} 
+        onChange={this.handleChange}  
+        style={{width:500}} />        
+        </Grid>
+        <Grid item xs={12}>
+        <Box sx={{mx:"auto",width:250}}>
+         <Button variant='contained' onClick={this.addEmployee}>
+          Add Employee
+        </Button>
+        <div>{this.state.response1.message}</div>
+        </Box>
+        
+        </Grid>
+        </Grid>
+
+    
+    </Box>
+    </Container>
+                 
+                 </React.Fragment>
+                
+                 </div>
                 
             )
         }
