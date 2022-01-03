@@ -9,6 +9,7 @@ import DashBoard from './dashboard'
 import AddEmployee from './addemployee'
 import EditEmployee from './editemployee'
 import DeleteEmployee from './deleteemployee'
+import EmployeeDetails from './employeedetails';
 
 ReactDOM.render(
 
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path="/addemployee" component={AddEmployee}></Route>        
         <Route path="/editemployee" component={EditEmployee}></Route>
         <Route path="/deleteemployee" component={DeleteEmployee}></Route>
+        <Route path="/employeedetails" component={EmployeeDetails}></Route>
       </Switch>
     </BrowserRouter>
   ,

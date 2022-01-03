@@ -11,8 +11,13 @@ class DashBoard extends React.Component{
         sessionStorage.removeItem("token");
         this.props.history.push("/")
       }
+      componentWillMount(){
+        if(sessionStorage.getItem('token')==null){
+          this.props.history.push("/")
+       }
+      }
     render(){
-        if(sessionStorage.getItem('token')!=null){           
+      
 
         return(
             <div>
@@ -20,11 +25,9 @@ class DashBoard extends React.Component{
             <Link to="/addemployee">Add Employee</Link>
             </div>    
             <div>
-            <Link to="/editemployee">Edit Employee</Link>
+            <Link to="/employeedetails">Employee Details</Link>
             </div>
-            <div>
-            <Link to="/deleteemployee">Delete Employee</Link>
-            </div>        
+                    
             <div>
             <Button variant='contained' onClick={this.handleLogout}>
           Logout
@@ -33,11 +36,7 @@ class DashBoard extends React.Component{
             
             </div>
         )
-        }else{
-            return(
-            <div>You are not authorized</div>
-            )
-        }
+      
     }
 }
 export default DashBoard

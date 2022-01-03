@@ -11,7 +11,11 @@ import TextField from '@mui/material/TextField';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
 import {Link} from 'react-router-dom'
+
+
 
 
 class AddEmployee extends React.Component{
@@ -50,10 +54,8 @@ class AddEmployee extends React.Component{
     
     addEmployee=(e)=>{
      e.preventDefault()
-     let token=sessionStorage.getItem('token');
-     
-     let extractedToken=token.substr(2,137);
-     
+     let token=sessionStorage.getItem('token');     
+     let extractedToken=token.substr(2,137);     
      let _employeeData={
         qci_id:this.state.qci_id,
         name:this.state.name,
@@ -80,33 +82,43 @@ class AddEmployee extends React.Component{
      ).then(json1=>this.setState({response1:json1})
      ).then(()=>alert(this.state.response1.message))
     }
+    componentWillMount(){
+      if(sessionStorage.getItem('token')==null){
+        this.props.history.push("/")
+     }
+    }
 
    
     render(){  
-      if(sessionStorage.getItem('token')==null){
-       return(
-         <div>You are not authorized.</div>
-       )
-      }else{     
+          
             return(
-                <div>
-                  
-            
-            <div>
-            <Link to="/editemployee">Edit Employee</Link>
-            </div>
-            <div>
-            <Link to="/deleteemployee">Delete Employee</Link>
-            </div>        
-            <div>
-            <Button variant='contained' onClick={this.handleLogout}>
+                <>                
+            <Grid container direction="column">
+              <Grid item>
+              <AppBar position="static">  
+           <Toolbar> 
+
+            <Typography style={{flex:1}}>Employee Management System </Typography> <Button variant='contained' onClick={this.handleLogout}>
           Logout
         </Button>
+        </Toolbar>  
+    </AppBar>
+              </Grid>
+              <Grid item>
+         <Grid container direction="row">
+           <Grid item sm={2}>
+            <div>
+            <Link to="/employeedetails">Employee Details</Link>
             </div>
+            <div>            
+            <Link to="/dashboard">Dashboard</Link>
+            </div>
+            </Grid>        
+           <Grid item  container sm={10} >
     <React.Fragment>
       <CssBaseline />
-       <Container maxWidth="sm">
-         <AppBar position="static">  
+       <Container>
+         <AppBar position="static" color="transparent">  
            <Toolbar>  
             Add Employee Details
         </Toolbar>  
@@ -115,8 +127,8 @@ class AddEmployee extends React.Component{
            sx={{ flexGrow: 1 ,border:1,mx: "auto",
              height: '150vh',
             '& > :not(style)': { m: 1, width: '70ch' }}}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+      <Grid container direction="row" spacing={4} style={{margin:'auto'}}>
+        <Grid item xs={12} sm={6} spacing={4}>
         <TextField 
         id="outlined-basic" 
         label="QCI_ID" 
@@ -124,9 +136,9 @@ class AddEmployee extends React.Component{
         name="qci_id" 
         value={this.state.qci_id} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Name" 
@@ -134,9 +146,9 @@ class AddEmployee extends React.Component{
         name="name" 
         value={this.state.name} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Email" 
@@ -144,9 +156,9 @@ class AddEmployee extends React.Component{
         name="email" 
         value={this.state.email} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Board" 
@@ -154,9 +166,9 @@ class AddEmployee extends React.Component{
         name="board" 
         value={this.state.board} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Designation" 
@@ -164,9 +176,9 @@ class AddEmployee extends React.Component{
         name="designation" 
         value={this.state.designation} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Type of Employee" 
@@ -174,9 +186,9 @@ class AddEmployee extends React.Component{
         name="type_of_employee" 
         value={this.state.type_of_employee} 
         onChange={this.handleChange}  
-        style={{width:500}} /> 
+        style={{width:300}} /> 
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_cl" 
@@ -184,9 +196,9 @@ class AddEmployee extends React.Component{
         name="bal_cl" 
         value={this.state.bal_cl} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>       
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_sl" 
@@ -194,9 +206,9 @@ class AddEmployee extends React.Component{
         name="bal_sl" 
         value={this.state.bal_sl} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_pl" 
@@ -204,9 +216,9 @@ class AddEmployee extends React.Component{
         name="bal_pl" 
         value={this.state.bal_pl} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_ml" 
@@ -214,9 +226,9 @@ class AddEmployee extends React.Component{
         name="bal_ml" 
         value={this.state.bal_ml} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_ptl" 
@@ -224,9 +236,9 @@ class AddEmployee extends React.Component{
         name="bal_ptl" 
         value={this.state.bal_ptl} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="bal_eol" 
@@ -234,9 +246,9 @@ class AddEmployee extends React.Component{
         name="bal_eol" 
         value={this.state.bal_eol} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
         <TextField 
         id="outlined-basic" 
         label="Password" 
@@ -244,9 +256,9 @@ class AddEmployee extends React.Component{
         name="password1" 
         value={this.state.password1} 
         onChange={this.handleChange}  
-        style={{width:500}} />        
+        style={{width:300}} />        
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} >
         <Box sx={{mx:"auto",width:250}}>
          <Button variant='contained' onClick={this.addEmployee}>
           Add Employee
@@ -262,11 +274,15 @@ class AddEmployee extends React.Component{
     </Container>
                  
                  </React.Fragment>
-                
-                 </div>
+                 </Grid>
+                 </Grid>       
+                 </Grid>
+                 </Grid>
+
+                 </>
                 
             )
-            }
+            
     }
 }
 export default AddEmployee
